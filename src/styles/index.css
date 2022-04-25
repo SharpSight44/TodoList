@@ -12,6 +12,7 @@
   margin-left: 43px ;
   color: rgb(29, 3, 146);
   font-size: 40px;
+  cursor: pointer;
 }
 .checkbox:hover {
   color: rgb(44, 255, 44);
@@ -24,6 +25,7 @@
   color: #ad7f7f;
   font-size: 30px;
   margin-left: 12px;
+  cursor: pointer;
   
 }
 
@@ -132,6 +134,7 @@ border: 2px solid rgb(0, 255, 34) ;
 
 color: rgb(46, 238, 46);
 background-color: azure;
+cursor: pointer;
  }
 
  /* React Amination Below  */
