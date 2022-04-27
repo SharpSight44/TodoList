@@ -3,12 +3,52 @@ import { BsTrash } from "react-icons/bs";
 import { SiAddthis } from "react-icons/si";
 import { BsCheckCircleFill, BsTrophyFill } from "react-icons/bs";
 import { BiReset } from "react-icons/bi";
+import changeTitle from "./nameTitleTab.js";
 
 const ListApp = (props) => {
+	fetch("https://jsonplaceholder.typicode.com/todos", {
+		method: "POST",
+		body: JSON.stringify({
+			title: "food to eat ",
+			completed: false,
+			userId: 1,
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	})
+		.then((response) => response.json())
+		.then((json) => console.log(json));
+
+	fetch("https://jsonplaceholder.typicode.com/todos/1", {
+		method: "PUT",
+		body: JSON.stringify({
+			id: 1,
+			title: "foo",
+			body: "barmeals are cool ",
+			userId: 1,
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	})
+		.then((response) => response.json())
+		.then((json) => setLook(json.body));
+
+	fetch("https://jsonplaceholder.typicode.com/todos/1")
+		.then((response) => response.json())
+		.then((json) => console.log(json));
+	const [look, setLook] = useState([]);
 	const [todo, setTodo] = useState("");
 	const [list, setList] = useState([]);
 	const [strike, setStrike] = useState("");
 	const [done, setDone] = useState([]);
+
+	const newFunction = (param) => {
+		return param;
+	};
+
+	changeTitle();
 
 	const addItem = (item) => {
 		const newList = [...list, item];
@@ -79,6 +119,7 @@ const ListApp = (props) => {
 							</li>
 						);
 					})}
+					<li>{look}</li>
 				</ul>
 			</div>
 		</>
