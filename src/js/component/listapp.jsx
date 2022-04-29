@@ -1,59 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsTrash } from "react-icons/bs";
-import { SiAddthis } from "react-icons/si";
+import { SiAddthis, SiEthiopianairlines, SiHellofresh } from "react-icons/si";
 import { BsCheckCircleFill, BsTrophyFill } from "react-icons/bs";
 import { BiReset } from "react-icons/bi";
 import changeTitle from "./nameTitleTab.js";
+import { getTodos } from "../api.js";
+import { updateList } from "../api.js";
+import { deleteTodo } from "../api.js";
+import { createTodo } from "../api.js";
 
 const ListApp = (props) => {
-	fetch("https://jsonplaceholder.typicode.com/todos", {
-		method: "POST",
-		body: JSON.stringify({
-			title: "food to eat ",
-			completed: false,
-			userId: 1,
-		}),
-		headers: {
-			"Content-type": "application/json; charset=UTF-8",
-		},
-	})
-		.then((response) => response.json())
-		.then((json) => console.log(json));
-
-	fetch("https://jsonplaceholder.typicode.com/todos/1", {
-		method: "PUT",
-		body: JSON.stringify({
-			id: 1,
-			title: "foo",
-			body: "barmeals are cool ",
-			userId: 1,
-		}),
-		headers: {
-			"Content-type": "application/json; charset=UTF-8",
-		},
-	})
-		.then((response) => response.json())
-		.then((json) => setLook(json.body));
-
-	fetch("https://jsonplaceholder.typicode.com/todos/1")
-		.then((response) => response.json())
-		.then((json) => console.log(json));
-	const [look, setLook] = useState([]);
 	const [todo, setTodo] = useState("");
 	const [list, setList] = useState([]);
-	const [strike, setStrike] = useState("");
 	const [done, setDone] = useState([]);
-
-	const newFunction = (param) => {
-		return param;
-	};
-
+	const [api, setApi] = useState(1);
+	const [live, setLive] = useState(false);
 	changeTitle();
+
+	useEffect(() => {
+		const fn = async () => {
+			const apiTodos = await getTodos();
+			setList(apiTodos.map((x) => x.label));
+		};
+		fn();
+	}, []);
+	// useEffect(() => {
+	// 	const fn = async () => {
+	// 		await createTodo([
+	// 			{
+	// 				label: "hello karin",
+	// 				done: false,
+	// 			},
+	// 		]);
+	// 	};
+	// 	fn();
+	// }, [live]);
+
+	useEffect(() => {
+		const fn = async () => {
+			await updateList(list.map((x) => ({ label: x, done: false })));
+		};
+		fn();
+	}, [list]);
+
+	useEffect(() => {
+		const fn = async () => {
+			await deleteTodo();
+		};
+		fn();
+	}, [api]);
 
 	const addItem = (item) => {
 		const newList = [...list, item];
 
-		return setList(newList), setTodo("");
+		return setList(newList), setTodo(""), setLive(true);
 	};
 
 	const deleteItem = (i) => {
@@ -65,8 +65,8 @@ const ListApp = (props) => {
 
 		return setList(updatedList);
 	};
-	const resetAll = () => {
-		return setList([]), setStrike(""), setDone([]);
+	const resetAll = (i) => {
+		return setList([]), setDone([]), setApi(i++);
 	};
 
 	const addDone = (item, i) => {
@@ -91,7 +91,7 @@ const ListApp = (props) => {
 					onChange={(event) => setTodo(event.currentTarget.value)}
 				/>
 				<SiAddthis className="add" onClick={() => addItem(todo)} />
-				<BiReset className="reset" onClick={() => resetAll()} />
+				<BiReset className="reset" onClick={() => resetAll(api)} />
 				RESET
 				<ul>
 					{list.map((value, i) => {
@@ -119,7 +119,6 @@ const ListApp = (props) => {
 							</li>
 						);
 					})}
-					<li>{look}</li>
 				</ul>
 			</div>
 		</>

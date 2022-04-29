@@ -64,8 +64,8 @@ ul {
     
 }
 body {
-    
- background-image: url("https://img.wallpapersafari.com/desktop/1920/1080/55/86/pb5PKy.jpg");
+
+  background-image: url("https://img.wallpapersafari.com/desktop/1920/1080/55/86/pb5PKy.jpg"); 
 
 
 }
@@ -90,7 +90,7 @@ input {
 }
 
 .quote{
-    color: white;
+    color: rgb(255, 255, 255);
 font-size: 88px;
 font-family: 'Shadows Into Light', cursive;
 text-shadow: 0px 0px 10px rgb(10, 75, 255);
